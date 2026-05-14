@@ -1,0 +1,240 @@
+/* ETF Monitor — Custom Stylesheet
+   Professional finance aesthetic, dark navy sidebar, clean metric cards. */
+
+[data-testid="stSidebar"] {
+    background: #0f172a !important;
+    color: #e2e8f0;
+}
+
+[data-testid="stSidebar"] .sidebar-content {
+    padding: 1rem;
+}
+
+[data-testid="stSidebar"] h1 {
+    color: #f8fafc;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.metric-card {
+    background: #1e293b;
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    border: 1px solid #334155;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.price-up {
+    color: #22c55e;
+    font-weight: 600;
+}
+
+.price-down {
+    color: #ef4444;
+    font-weight: 600;
+}
+
+.price-neutral {
+    color: #94a3b8;
+    font-weight: 600;
+}
+
+.badge-active {
+    background: #166534;
+    color: #bbf7d0;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.badge-triggered {
+    background: #7f1d1d;
+    color: #fecaca;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.badge-snoozed {
+    background: #713f12;
+    color: #fde68a;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.badge-inactive {
+    background: #374151;
+    color: #9ca3af;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+/* Cards and containers */
+div[data-testid="stMetric"] {
+    background: #1e293b;
+    border-radius: 12px;
+    padding: 1rem;
+    border: 1px solid #334155;
+}
+
+div[data-testid="stMetric"] label {
+    color: #94a3b8;
+    font-size: 0.85rem;
+}
+
+div[data-testid="stMetric"] div {
+    color: #f8fafc !important;
+}
+
+/* Data tables */
+[data-testid="stDataFrame"] {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.stDataFrame [data-testid="stTable"] {
+    border: 1px solid #334155;
+}
+
+/* Buttons */
+.stButton button {
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.stButton button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* Input fields */
+div[data-testid="stTextInput"] input,
+div[data-testid="stNumberInput"] input,
+div[data-testid="stSelectbox"] div[data-baseweb="select"] > div {
+    border-radius: 8px;
+    border-color: #334155;
+}
+
+div[data-testid="stTextInput"] input:focus,
+div[data-testid="stNumberInput"] input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59,130,246,0.2);
+}
+
+/* Expander */
+.streamlit-expanderHeader {
+    background: #1e293b;
+    border-radius: 8px;
+    border: 1px solid #334155;
+}
+
+/* Alert banners */
+div[data-baseweb="alert"] {
+    border-radius: 8px;
+}
+
+/* Tabs */
+button[data-baseweb="tab"] {
+    border-radius: 8px 8px 0 0 !important;
+}
+
+/* Main content area */
+.main .block-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+/* Status badges in tables */
+.status-badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* Sparkline container */
+.sparkline-cell {
+    width: 100px;
+    height: 30px;
+}
+
+/* Card hover effect */
+.hover-card {
+    transition: all 0.2s;
+}
+.hover-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+}
+
+/* Custom divider */
+.custom-divider {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #334155, transparent);
+    margin: 1.5rem 0;
+}
+
+/* Section headers */
+.section-header {
+    color: #f1f5f9;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #334155;
+}
+
+/* Loading spinner colors */
+.stSpinner > div {
+    border-color: #3b82f6 !important;
+}
+
+/* Multi-select */
+div[data-testid="stMultiSelect"] div[data-baseweb="select"] > div {
+    border-radius: 8px;
+    border-color: #334155;
+}
+
+/* Radio buttons */
+div[data-testid="stRadio"] label {
+    color: #e2e8f0;
+}
+
+/* Checkbox */
+div[data-testid="stCheckbox"] label {
+    color: #e2e8f0;
+}
+
+/* DataFrame pagination */
+[data-testid="stDataFrame"] button {
+    border-radius: 6px;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #1e293b;
+}
+::-webkit-scrollbar-thumb {
+    background: #475569;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+}
