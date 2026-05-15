@@ -187,4 +187,4 @@ Distributed under the MIT License. See `LICENSE` for more information.
 - [Streamlit](https://streamlit.io) for the amazing web framework
 - [yfinance](https://github.com/ranaroussi/yfinance) for Yahoo Finance data
 - [Plotly](https://plotly.com) for interactive charts
-- [APScheduler](https://apscheduler.readthedocs.io) for background scheduling
+- [APScheduler](https://apscheduler.readthedocs.io) for background schedulingTest commit at 2026-05-15T17:23:55Z
