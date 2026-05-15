@@ -64,7 +64,7 @@ def generate_pdf_report(
 
             pdf.set_text_color(248, 250, 252)
             pdf.set_font("Helvetica", "B", 20)
-            pdf.cell(0, 12, f"{etf.ticker} — {etf.name or ''}", align="L")
+            pdf.cell(0, 12, f"{etf.ticker} - {etf.name or ''}", align="L")
             pdf.ln(16)
 
             # Price history table
@@ -152,7 +152,7 @@ def generate_pdf_report(
     pdf.set_font("Helvetica", "I", 8)
     pdf.cell(0, 5, "ETF Monitor - Automated Report", align="C")
 
-    return pdf.output()
+    return bytes(pdf.output())
 
 
 def generate_csv_report(
