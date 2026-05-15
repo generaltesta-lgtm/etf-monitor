@@ -9,3 +9,4 @@ fpdf2>=2.7.9
 schedule>=1.2.2
 requests>=2.32.3
 pytz>=2024.1
+psycopg2-binary>=2.9.9
