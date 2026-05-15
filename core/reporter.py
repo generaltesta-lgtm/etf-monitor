@@ -94,12 +94,13 @@ def generate_pdf_report(
                 # Table rows
                 pdf.set_font("Helvetica", "", 8)
                 pdf.set_text_color(203, 213, 225)
-                sym = currency_symbol(etf.currency)
+                # Use currency code instead of symbol for PDF to avoid Unicode issues
+                currency_code = etf.currency
 
                 for rec in records[:30]:  # Limit to 30 rows for PDF
                     ts = rec.fetched_at.strftime("%Y-%m-%d %H:%M") if rec.fetched_at else "N/A"
                     pdf.cell(col_w[0], 7, ts, align="C")
-                    pdf.cell(col_w[1], 7, f"{sym}{rec.price:.2f}", align="C")
+                    pdf.cell(col_w[1], 7, f"{currency_code}{rec.price:.2f}", align="C")
                     pdf.cell(col_w[2], 7, f"{int(rec.volume):,}", align="C")
                     change_clr = (34, 197, 94) if rec.change_pct >= 0 else (239, 68, 68)
                     pdf.set_text_color(*change_clr)
@@ -119,10 +120,10 @@ def generate_pdf_report(
                     pdf.set_font("Helvetica", "", 9)
                     pdf.set_text_color(203, 213, 225)
                     stats = [
-                        ("High", f"{sym}{max(prices):.2f}"),
-                        ("Low", f"{sym}{min(prices):.2f}"),
-                        ("Average", f"{sym}{sum(prices)/len(prices):.2f}"),
-                        ("Latest", f"{sym}{prices[0]:.2f}"),
+                        ("High", f"{currency_code}{max(prices):.2f}"),
+                        ("Low", f"{currency_code}{min(prices):.2f}"),
+                        ("Average", f"{currency_code}{sum(prices)/len(prices):.2f}"),
+                        ("Latest", f"{currency_code}{prices[0]:.2f}"),
                     ]
                     for label, val in stats:
                         pdf.cell(40, 7, label, align="L")
