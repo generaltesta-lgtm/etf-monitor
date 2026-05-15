@@ -84,8 +84,8 @@ else:
 
 st.markdown("---")
 
-# ── Multi-ETF Comparison Chart ───────────────────────────────────────────────
-st.markdown("<h2 class='section-header'>📈 Price Comparison</h2>", unsafe_allow_html=True)
+# ── Price Chart(s) ───────────────────────────────────────────────
+st.markdown("<h2 class='section-header'>📈 Price Chart</h2>", unsafe_allow_html=True)
 
 period_map = {
     "1W": "5d",
@@ -105,15 +105,27 @@ selected_period = st.segmented_control(
 period = period_map.get(selected_period, "1mo")
 
 if etfs:
-    histories = {}
-    for etf in etfs:
-        hist = fetch_history(etf.ticker, period=period)
-        if not hist.empty:
-            histories[etf.ticker] = hist
-
-    if histories:
-        render_multi_etf_chart(histories, period=selected_period)
+    if len(etfs) == 1:
+        # Single ETF: show actual price chart
+        etf = etfs[0]
+        with st.spinner(f"Loading price chart for {etf.ticker}..."):
+            hist = fetch_history(etf.ticker, period=period)
+            if not hist.empty:
+                render_price_chart(hist, ticker=etf.ticker, title=f"{etf.ticker} Price ({period})")
+            else:
+                st.info(f"No historical data available for {etf.ticker}")
     else:
-        st.info("No historical data available for comparison.")
+        # Multiple ETFs: show normalized comparison chart
+        st.caption("Showing normalized performance (starting at 100) for comparison")
+        histories = {}
+        for etf in etfs:
+            hist = fetch_history(etf.ticker, period=period)
+            if not hist.empty:
+                histories[etf.ticker] = hist
+
+        if histories:
+            render_multi_etf_chart(histories, period=selected_period)
+        else:
+            st.info("No historical data available for comparison.")
 else:
-    st.info("Add ETFs to see comparison charts.")
+    st.info("Add ETFs to see price charts.")
