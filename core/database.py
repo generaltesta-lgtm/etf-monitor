@@ -18,7 +18,10 @@ DB_NAME = "etf_monitor.db"
 DB_PATH = os.path.join(DB_DIR, DB_NAME)
 DATABASE_URL = os.environ.get("DATABASE_URL", f"sqlite:///{DB_PATH}")
 
-engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False}, echo=False)
+if DATABASE_URL.startswith("sqlite"):
+    engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False}, echo=False)
+else:
+    engine = create_engine(DATABASE_URL, echo=False)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
