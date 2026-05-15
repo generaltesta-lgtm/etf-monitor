@@ -9,7 +9,7 @@ from core.database import ETF, Alert, get_session
 from core.fetcher import currency_symbol, fetch_current_price, fetch_history
 from core.utils import rome_now
 from components.etf_card import render_etf_card
-from components.price_chart import render_multi_etf_chart, render_sparkline
+from components.price_chart import render_multi_etf_chart, render_sparkline, render_price_chart
 
 st.markdown("# 📊 Dashboard")
 st.markdown("---")
