@@ -45,8 +45,7 @@ if "scheduler_started" not in st.session_state:
 
 # ── Sidebar ──────────────────────────────────────────────────────────────────
 with st.sidebar:
-    # Logo and title at the top
-    st.image("https://img.icons8.com/fluency/96/stock-chart.png", width=60)
+    st.image("https://img.icons8.com/fluency/96/stock-exchange.png", width=60)
     st.markdown("<h1 style='margin-top:-10px;'>ETF Monitor</h1>", unsafe_allow_html=True)
     st.markdown("---")
 
@@ -89,15 +88,6 @@ with st.sidebar:
 
     st.markdown("---")
     st.caption(f"v1.0.0 · {rome_now().strftime('%Y-%m-%d %H:%M')} (Rome)")
-
-    st.markdown("---")
-
-    # Manual navigation at the bottom
-    st.page_link("app.py", label="Dashboard", icon="📊")
-    st.page_link("pages/02_ETF_Manager.py", label="ETF Manager", icon="📋")
-    st.page_link("pages/03_Alerts.py", label="Alerts", icon="🔔")
-    st.page_link("pages/04_Reports.py", label="Reports", icon="📄")
-    st.page_link("pages/05_Settings.py", label="Settings", icon="⚙️")
 
 
 # ── Page routing ─────────────────────────────────────────────────────────────
