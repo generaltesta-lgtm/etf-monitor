@@ -5,13 +5,14 @@ Works reliably on Railway/Heroku/etc. since it uses HTTPS (port 443).
 
 import logging
 import os
+import base64
 from typing import Optional
 
 logger = logging.getLogger(__name__)
 
 try:
     from sendgrid import SendGridAPIClient
-    from sendgrid.helpers.mail import Mail
+    from sendgrid.helpers.mail import Mail, Attachment, FileContent, FileName, FileType, Disposition
     SENDGRID_AVAILABLE = True
 except ImportError:
     SENDGRID_AVAILABLE = False
@@ -125,6 +126,9 @@ def send_alert_email(
         )
 
         sg = SendGridAPIClient(config["api_key"])
+        # Optional: set EU data residency if needed
+        # if os.environ.get("SENDGRID_EU_RESIDENCY", "false").lower() == "true":
+        #     sg.set_sendgrid_data_residency("eu")
         response = sg.send(message)
 
         if response.status_code == 202:
@@ -132,7 +136,7 @@ def send_alert_email(
             return True
         else:
             logger.error(f"SendGrid returned unexpected status: {response.status_code}")
-            logger.error(f"Response body: {response.body}")
+            logger.error(f"Response body: {getattr(response, 'body', 'No body')}")
             return False
 
     except Exception as exc:
@@ -164,17 +168,20 @@ def send_report_email(report_path: str, recipient: Optional[str] = None) -> bool
 
         # Attach the PDF report
         with open(report_path, "rb") as f:
-            import base64
-            encoded_file = base64.b64encode(f.read()).decode()
-            attached_file = {
-                "content": encoded_file,
-                "filename": "etf_report.pdf",
-                "type": "application/pdf",
-                "disposition": "attachment"
-            }
-            message.attachment = attached_file
+            data = f.read()
+        encoded = base64.b64encode(data).decode()
+        attachment = Attachment(
+            FileContent(encoded),
+            FileName("etf_report.pdf"),
+            FileType("application/pdf"),
+            Disposition("attachment")
+        )
+        message.attachment = attachment
 
         sg = SendGridAPIClient(config["api_key"])
+        # Optional: set EU data residency if needed
+        # if os.environ.get("SENDGRID_EU_RESIDENCY", "false").lower() == "true":
+        #     sg.set_sendgrid_data_residency("eu")
         response = sg.send(message)
 
         if response.status_code == 202:
@@ -182,6 +189,7 @@ def send_report_email(report_path: str, recipient: Optional[str] = None) -> bool
             return True
         else:
             logger.error(f"SendGrid returned unexpected status for report: {response.status_code}")
+            logger.error(f"Response body: {getattr(response, 'body', 'No body')}")
             return False
 
     except FileNotFoundError:
