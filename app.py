@@ -45,7 +45,7 @@ if "scheduler_started" not in st.session_state:
 
 # ── Sidebar ──────────────────────────────────────────────────────────────────
 with st.sidebar:
-    st.image("https://img.icons8.com/fluency/96/stock-exchange.png", width=60)
+    st.image("assets/stock-exchange.png", width=60)
     st.markdown("<h1 style='margin-top:-10px;'>ETF Monitor</h1>", unsafe_allow_html=True)
     st.markdown("---")
 
