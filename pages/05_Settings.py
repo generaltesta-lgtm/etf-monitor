@@ -15,7 +15,7 @@ from core.database import (
     SessionLocal,
     get_session,
 )
-from core.notifier import test_connection as test_smtp_connection
+from core.notifier import test_connection as test_sendgrid_connection
 from core.scheduler import get_scheduler_status, set_interval, start_scheduler, stop_scheduler
 
 st.markdown("# ⚙️ Settings")
@@ -80,37 +80,28 @@ with col_c:
 
 st.markdown("---")
 
-# ── Email Settings ───────────────────────────────────────────────────────────
-st.markdown("<h2 class='section-header'>📧 Email Settings</h2>", unsafe_allow_html=True)
+# ── Email Settings (SendGrid) ─────────────────────────────────────────────────
+st.markdown("<h2 class='section-header'>📧 Email Settings (SendGrid)</h2>", unsafe_allow_html=True)
 
 with st.form("email_settings_form"):
-    smtp_host = st.text_input(
-        "SMTP Host",
-        value=os.environ.get("SMTP_HOST", ""),
-        placeholder="smtp.gmail.com",
-    )
-    smtp_port = st.number_input(
-        "SMTP Port",
-        value=int(os.environ.get("SMTP_PORT", "587")),
-        min_value=1,
-        max_value=65535,
-    )
-    smtp_user = st.text_input(
-        "SMTP Username",
-        value=os.environ.get("SMTP_USER", ""),
-        placeholder="your@gmail.com",
-    )
-    smtp_password = st.text_input(
-        "SMTP Password",
+    sendgrid_api_key = st.text_input(
+        "SendGrid API Key",
+        value=os.environ.get("SENDGRID_API_KEY", ""),
         type="password",
-        value=os.environ.get("SMTP_PASSWORD", ""),
-        placeholder="App password",
-        help="For Gmail, use an App Password (not your regular password)",
+        help="Get this from SendGrid → Settings → API Keys",
+        placeholder="SG.xxxxxxxx",
+    )
+    sendgrid_from_email = st.text_input(
+        "From Email",
+        value=os.environ.get("SENDGRID_FROM_EMAIL", ""),
+        placeholder="alerts@yourdomain.com",
+        help="Verified sender email in SendGrid",
     )
     notify_email = st.text_input(
         "Notification Email",
         value=os.environ.get("NOTIFY_EMAIL", ""),
-        placeholder="alerts@example.com",
+        placeholder="your_email@gmail.com",
+        help="Where you want to receive alerts",
     )
 
     cols = st.columns(2)
@@ -120,29 +111,25 @@ with st.form("email_settings_form"):
         tested = st.form_submit_button("🔍 Test Connection", use_container_width=True)
 
 if saved:
-    os.environ["SMTP_HOST"] = smtp_host
-    os.environ["SMTP_PORT"] = str(smtp_port)
-    os.environ["SMTP_USER"] = smtp_user
-    os.environ["SMTP_PASSWORD"] = smtp_password
+    os.environ["SENDGRID_API_KEY"] = sendgrid_api_key
+    os.environ["SENDGRID_FROM_EMAIL"] = sendgrid_from_email
     os.environ["NOTIFY_EMAIL"] = notify_email
     st.success("Email settings saved for this session. Set them permanently in your .env file.")
 
 if tested:
-    with st.spinner("Testing SMTP connection..."):
-        if all([smtp_host, smtp_user, smtp_password]):
-            os.environ["SMTP_HOST"] = smtp_host
-            os.environ["SMTP_PORT"] = str(smtp_port)
-            os.environ["SMTP_USER"] = smtp_user
-            os.environ["SMTP_PASSWORD"] = smtp_password
+    with st.spinner("Testing SendGrid connection..."):
+        if all([sendgrid_api_key, sendgrid_from_email, notify_email]):
+            os.environ["SENDGRID_API_KEY"] = sendgrid_api_key
+            os.environ["SENDGRID_FROM_EMAIL"] = sendgrid_from_email
             os.environ["NOTIFY_EMAIL"] = notify_email
 
-            ok = test_smtp_connection()
+            ok = test_sendgrid_connection()
             if ok:
-                st.success("✅ SMTP connection successful!")
+                st.success("✅ SendGrid connection successful!")
             else:
-                st.error("❌ SMTP connection failed. Check credentials.")
+                st.error("❌ SendGrid configuration invalid. Check API key and emails.")
         else:
-            st.warning("Please fill in host, user, and password to test.")
+            st.warning("Please fill in all fields to test.")
 
 st.markdown("---")
 
