@@ -131,6 +131,9 @@ def send_alert_email(
         #     sg.set_sendgrid_data_residency("eu")
         response = sg.send(message)
 
+        # Log response details for debugging (like testmail.py does)
+        logger.info(f"SendGrid response: status={response.status_code}, body={getattr(response, 'body', 'No body')}")
+
         if response.status_code == 202:
             logger.info(f"Alert email sent for {ticker} ({condition}) via SendGrid")
             return True
@@ -183,6 +186,9 @@ def send_report_email(report_path: str, recipient: Optional[str] = None) -> bool
         # if os.environ.get("SENDGRID_EU_RESIDENCY", "false").lower() == "true":
         #     sg.set_sendgrid_data_residency("eu")
         response = sg.send(message)
+
+        # Log response details for debugging
+        logger.info(f"SendGrid report response: status={response.status_code}, body={getattr(response, 'body', 'No body')}")
 
         if response.status_code == 202:
             logger.info(f"Report email sent to {target} via SendGrid")
