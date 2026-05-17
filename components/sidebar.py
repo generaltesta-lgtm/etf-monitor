@@ -6,7 +6,7 @@ import streamlit as st
 def render_sidebar() -> None:
     """Render the shared sidebar with navigation and system status."""
     with st.sidebar:
-        # Use emoji for now to avoid background issues with the PNG
+        # Use emoji instead of PNG to avoid background issues
         st.markdown('<span style="font-size: 48px;">📈</span>', unsafe_allow_html=True)
         st.markdown("<h1 style='margin-top:-10px;'>ETF Monitor</h1>", unsafe_allow_html=True)
         st.markdown("---")
