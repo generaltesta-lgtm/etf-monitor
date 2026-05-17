@@ -28,10 +28,15 @@ def render_sidebar() -> None:
         )
 
         import os
-        smtp_host = os.environ.get("SMTP_HOST", "")
+        # Check SendGrid configuration for email status
+        sendgrid_configured = bool(
+            os.environ.get("SENDGRID_API_KEY") and
+            os.environ.get("SENDGRID_FROM_EMAIL") and
+            os.environ.get("NOTIFY_EMAIL")
+        )
         col3.markdown(
             f"<div style='text-align:center;padding:8px;background:#1e293b;border-radius:8px;'>"
-            f"<span style='font-size:20px;'>{'✅' if smtp_host else '⚠️'}</span><br/><small>Email</small></div>",
+            f"<span style='font-size:20px;'>{'✅' if sendgrid_configured else '⚠️'}</span><br/><small>Email</small></div>",
             unsafe_allow_html=True,
         )
 
