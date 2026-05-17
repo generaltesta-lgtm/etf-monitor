@@ -79,15 +79,17 @@ with col_form:
     # Test notification
     st.markdown("<h3 class='section-header'>📧 Test Notification</h3>", unsafe_allow_html=True)
     if st.button("Send Test Email", type="secondary", use_container_width=True):
-        smtp_ok = test_connection()
-        if smtp_ok:
-            st.session_state.test_email_sent = True
-            st.success("✅ SMTP connection OK. Test email would be sent.")
-        else:
-            st.session_state.test_email_sent = True
-            st.error(
-                "❌ SMTP connection failed. Check Settings → Email configuration."
-            )
+        # Import here to avoid circular imports
+        from core.notifier import send_test_email
+        with st.spinner("Sending test email..."):
+            if send_test_email():
+                st.session_state.test_email_sent = True
+                st.success("✅ Test email sent successfully! Check your notification email.")
+            else:
+                st.session_state.test_email_sent = True
+                st.error(
+                    "❌ Failed to send test email. Check SendGrid configuration and logs."
+                )
 
 # ── Active Alerts Table ──────────────────────────────────────────────────────
 with col_table:

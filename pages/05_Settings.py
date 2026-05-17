@@ -15,7 +15,7 @@ from core.database import (
     SessionLocal,
     get_session,
 )
-from core.notifier import test_connection as test_sendgrid_connection
+from core.notifier import send_test_email
 from core.scheduler import get_scheduler_status, set_interval, start_scheduler, stop_scheduler
 
 st.markdown("# ⚙️ Settings")
@@ -83,53 +83,23 @@ st.markdown("---")
 # ── Email Settings (SendGrid) ─────────────────────────────────────────────────
 st.markdown("<h2 class='section-header'>📧 Email Settings (SendGrid)</h2>", unsafe_allow_html=True)
 
-with st.form("email_settings_form"):
-    sendgrid_api_key = st.text_input(
-        "SendGrid API Key",
-        value=os.environ.get("SENDGRID_API_KEY", ""),
-        type="password",
-        help="Get this from SendGrid → Settings → API Keys",
-        placeholder="SG.xxxxxxxx",
-    )
-    sendgrid_from_email = st.text_input(
-        "From Email",
-        value=os.environ.get("SENDGRID_FROM_EMAIL", ""),
-        placeholder="alerts@yourdomain.com",
-        help="Verified sender email in SendGrid",
-    )
-    notify_email = st.text_input(
-        "Notification Email",
-        value=os.environ.get("NOTIFY_EMAIL", ""),
-        placeholder="your_email@gmail.com",
-        help="Where you want to receive alerts",
-    )
+st.info("Email settings are configured via environment variables (set in Railway).")
 
-    cols = st.columns(2)
-    with cols[0]:
-        saved = st.form_submit_button("💾 Save & Apply", type="primary", use_container_width=True)
-    with cols[1]:
-        tested = st.form_submit_button("🔍 Test Connection", use_container_width=True)
+if st.button("🔍 Test Connection", use_container_width=True):
+    sendgrid_api_key = os.environ.get("SENDGRID_API_KEY")
+    sendgrid_from_email = os.environ.get("SENDGRID_FROM_EMAIL")
+    notify_email = os.environ.get("NOTIFY_EMAIL")
 
-if saved:
-    os.environ["SENDGRID_API_KEY"] = sendgrid_api_key
-    os.environ["SENDGRID_FROM_EMAIL"] = sendgrid_from_email
-    os.environ["NOTIFY_EMAIL"] = notify_email
-    st.success("Email settings saved for this session. Set them permanently in your .env file.")
-
-if tested:
-    with st.spinner("Testing SendGrid connection..."):
-        if all([sendgrid_api_key, sendgrid_from_email, notify_email]):
-            os.environ["SENDGRID_API_KEY"] = sendgrid_api_key
-            os.environ["SENDGRID_FROM_EMAIL"] = sendgrid_from_email
-            os.environ["NOTIFY_EMAIL"] = notify_email
-
-            ok = test_sendgrid_connection()
-            if ok:
-                st.success("✅ SendGrid connection successful!")
+    if not all([sendgrid_api_key, sendgrid_from_email, notify_email]):
+        st.error("Missing one or more of: SENDGRID_API_KEY, SENDGRID_FROM_EMAIL, NOTIFY_EMAIL")
+    else:
+        with st.spinner("Sending test email..."):
+            # Import here to avoid circular imports
+            from core.notifier import send_test_email
+            if send_test_email():
+                st.success("✅ Test email sent successfully! Check your notification email.")
             else:
-                st.error("❌ SendGrid configuration invalid. Check API key and emails.")
-        else:
-            st.warning("Please fill in all fields to test.")
+                st.error("❌ Failed to send test email. Check SendGrid configuration and logs.")
 
 st.markdown("---")
 

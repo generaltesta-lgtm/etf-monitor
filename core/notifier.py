@@ -222,3 +222,31 @@ def test_connection() -> bool:
 
     logger.info("SendGrid configuration appears valid")
     return True
+
+
+def send_test_email() -> bool:
+    """Send a test email to verify SendGrid configuration."""
+    config = _get_sendgrid_config()
+    if not all([config["api_key"], config["from_email"], config["notify_email"]]):
+        logger.warning("SendGrid not fully configured — cannot send test email")
+        return False
+
+    try:
+        message = Mail(
+            from_email=config["from_email"],
+            to_emails=config["notify_email"],
+            subject="ETF Monitor - Test Connection",
+            plain_text_content="This is a test email from ETF Monitor to verify your SendGrid configuration."
+        )
+        sg = SendGridAPIClient(config["api_key"])
+        response = sg.send(message)
+        if response.status_code == 202:
+            logger.info("Test email sent successfully")
+            return True
+        else:
+            logger.error(f"SendGrid returned unexpected status: {response.status_code}")
+            logger.error(f"Response body: {getattr(response, 'body', 'No body')}")
+            return False
+    except Exception as exc:
+        logger.error(f"Failed to send test email: {exc}")
+        return False
