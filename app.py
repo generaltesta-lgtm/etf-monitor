@@ -55,8 +55,12 @@ with st.sidebar:
     db_ok = st.session_state.get("db_initialized", False)
     sched_ok = st.session_state.get("scheduler_started", False)
 
-    smtp_host = os.environ.get("SMTP_HOST", "")
-    email_ok = bool(smtp_host)
+    # Check SendGrid configuration for email status
+    email_ok = bool(
+        os.environ.get("SENDGRID_API_KEY") and
+        os.environ.get("SENDGRID_FROM_EMAIL") and
+        os.environ.get("NOTIFY_EMAIL")
+    )
 
     col1, col2, col3 = st.columns(3)
     col1.markdown(
