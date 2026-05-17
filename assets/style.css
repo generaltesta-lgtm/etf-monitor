@@ -3,7 +3,7 @@
 
 [data-testid="stSidebar"] {
     background: #0f172a !important;
-    color: #e2e8f0;
+    color: #ffffff !important;
 }
 
 [data-testid="stSidebar"] .sidebar-content {
@@ -11,7 +11,7 @@
 }
 
 [data-testid="stSidebar"] h1 {
-    color: #f8fafc;
+    color: #ffffff;
     font-size: 1.5rem;
     font-weight: 700;
 }
@@ -144,6 +144,11 @@ div[data-baseweb="alert"] {
     border-radius: 8px;
 }
 
+/* Alert boxes in sidebar */
+[data-testid="stSidebar"] .stAlert {
+    color: #ffffff !important;
+}
+
 /* Tabs */
 button[data-baseweb="tab"] {
     border-radius: 8px 8px 0 0 !important;
@@ -189,7 +194,7 @@ button[data-baseweb="tab"] {
 
 /* Section headers */
 .section-header {
-    color: #f1f5f9;
+    color: #ffffff;
     font-size: 1.1rem;
     font-weight: 600;
     margin-bottom: 0.75rem;
@@ -210,12 +215,12 @@ div[data-testid="stMultiSelect"] div[data-baseweb="select"] > div {
 
 /* Radio buttons */
 div[data-testid="stRadio"] label {
-    color: #e2e8f0;
+    color: #ffffff;
 }
 
 /* Checkbox */
 div[data-testid="stCheckbox"] label {
-    color: #e2e8f0;
+    color: #ffffff;
 }
 
 /* DataFrame pagination */
